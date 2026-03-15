@@ -1,31 +1,22 @@
 import sqlite3
 
-DB_NAME = "data/health.db"
+conn = sqlite3.connect("healthmon.db", check_same_thread=False)
+cursor = conn.cursor()
 
-def connect():
-    return sqlite3.connect(DB_NAME)
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS medications(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    time TEXT
+)
+""")
 
-def create_tables():
+conn.commit()
 
-    conn = connect()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS medication(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        time TEXT
-    )
-    """)
-
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS health_metrics(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        steps INTEGER,
-        heart_rate INTEGER,
-        date TEXT
-    )
-    """)
-
+def add_medication(name, time):
+    cursor.execute("INSERT INTO medications(name,time) VALUES (?,?)",(name,time))
     conn.commit()
-    conn.close()
+
+def get_medications():
+    cursor.execute("SELECT name,time FROM medications")
+    return cursor.fetchall()
