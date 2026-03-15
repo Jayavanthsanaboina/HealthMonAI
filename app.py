@@ -1,73 +1,86 @@
 import streamlit as st
-import pandas as pd
-import threading
+import matplotlib.pyplot as plt
 
-from database import create_tables
-from medication import add_medication,get_medications
-from health_metrics import add_metrics,get_metrics
 from chatbot import ask_health_question
-from utils.reminder import start_reminder_service
+from health_metrics import calculate_bmi
+from medication import add_new_medication, list_medications
 
-create_tables()
-
-threading.Thread(target=start_reminder_service, daemon=True).start()
-
-st.title("Healthcare Monitoring AI Assistant")
+st.title("HealthMonAI")
 
 menu = st.sidebar.selectbox(
-    "Navigation",
-    ["Medication Tracker","Health Metrics","AI Chatbot"]
+    "Menu",
+    ["Chatbot","BMI Calculator","Medication Tracker","Health Report"]
 )
 
-# Medication Tracker
-if menu == "Medication Tracker":
+# ---------------- CHATBOT ---------------- #
 
-    st.header("Medication Reminder")
+if menu == "Chatbot":
+
+    question = st.text_input("Ask health question")
+
+    if st.button("Ask"):
+        response = ask_health_question(question)
+        st.write(response)
+
+
+# ---------------- BMI CALCULATOR ---------------- #
+
+elif menu == "BMI Calculator":
+
+    weight = st.number_input("Weight (kg)")
+    height = st.number_input("Height (cm)")
+
+    if st.button("Calculate BMI"):
+
+        bmi = calculate_bmi(weight, height)
+
+        st.write("Your BMI:", bmi)
+
+        # BMI Visualization
+        bmi_values = [18, 22, 25, 28, 30]
+
+        fig, ax = plt.subplots()
+        ax.plot(bmi_values, marker="o")
+        ax.set_title("Sample BMI Trend")
+
+        st.pyplot(fig)
+
+
+# ---------------- MEDICATION TRACKER ---------------- #
+
+elif menu == "Medication Tracker":
 
     name = st.text_input("Medicine Name")
     time = st.text_input("Time (HH:MM)")
 
     if st.button("Add Medication"):
-        add_medication(name,time)
+
+        add_new_medication(name, time)
         st.success("Medication Added")
 
-    meds = get_medications()
+    if st.button("Show Medications"):
+
+        meds = list_medications()
+        st.table(meds)
+
+
+# ---------------- HEALTH REPORT ---------------- #
+
+elif menu == "Health Report":
+
+    st.subheader("Simple Health Report")
+
+    meds = list_medications()
+
+    st.write("### Stored Medications")
 
     if meds:
-        df = pd.DataFrame(meds,columns=["ID","Medicine","Time"])
-        st.table(df)
+        st.table(meds)
+    else:
+        st.write("No medications found")
 
+    st.write("### Health Tips")
+    st.write("• Maintain a healthy BMI")
+    st.write("• Take medications on time")
+    st.write("• Exercise regularly")
 
-# Health Metrics
-elif menu == "Health Metrics":
-
-    st.header("Health Tracking")
-
-    steps = st.number_input("Steps Walked",0,50000)
-    heart = st.number_input("Heart Rate",40,200)
-
-    if st.button("Save Data"):
-        add_metrics(steps,heart)
-        st.success("Health Data Saved")
-
-    data = get_metrics()
-
-    if data:
-        df = pd.DataFrame(data,columns=["ID","Steps","Heart Rate","Date"])
-        st.table(df)
-
-
-# AI Chatbot
-else:
-
-    st.header("AI Health Assistant")
-
-    question = st.text_input("Ask a health question")
-
-    if st.button("Ask AI"):
-
-        if question:
-
-            response = ask_health_question(question)
-
-            st.write(response)
