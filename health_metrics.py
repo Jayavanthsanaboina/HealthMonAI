@@ -1,26 +1,12 @@
-from database import connect
-from datetime import date
+def calculate_bmi(weight, height):
 
-def add_metrics(steps,heart_rate):
+    if height == 0:
+        return 0
 
-    conn = connect()
-    cursor = conn.cursor()
+    height_m = height / 100
+    bmi = weight / (height_m ** 2)
 
-    cursor.execute(
-        "INSERT INTO health_metrics(steps,heart_rate,date) VALUES (?,?,?)",
-        (steps,heart_rate,str(date.today()))
-    )
-
-    conn.commit()
-    conn.close()
-
-
-def get_metrics():
-
-    conn = connect()
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM health_metrics")
+    return round(bmi, 2)
 
     data = cursor.fetchall()
 
