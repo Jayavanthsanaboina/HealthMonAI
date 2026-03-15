@@ -2,7 +2,7 @@ import os
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
 
-os.environ["GROQ_API_KEY"] = "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"
+os.environ["GROQ_API_KEY"] = "api_key"
 
 llm = ChatGroq(
     model_name="llama-3.1-8b-instant",
