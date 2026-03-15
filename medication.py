@@ -1,28 +1,8 @@
-from database import connect
+from database import add_medication, get_medications
 
-def add_medication(name,time):
+def add_new_medication(name,time):
+    add_medication(name,time)
 
-    conn = connect()
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "INSERT INTO medication(name,time) VALUES (?,?)",
-        (name,time)
-    )
-
-    conn.commit()
-    conn.close()
-
-
-def get_medications():
-
-    conn = connect()
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM medication")
-
-    data = cursor.fetchall()
-
-    conn.close()
-
-    return data
+def list_medications():
+    meds = get_medications()
+    return meds
