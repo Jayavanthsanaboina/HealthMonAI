@@ -1,86 +1,92 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+import json
 
 from chatbot import ask_health_question
 from health_metrics import calculate_bmi
-from medication import add_new_medication, list_medications
+from medication import add_new_medication, list_medications, check_interaction
 
 st.title("HealthMonAI")
 
 menu = st.sidebar.selectbox(
     "Menu",
-    ["Chatbot","BMI Calculator","Medication Tracker","Health Report"]
+    ["Chatbot","BMI Calculator","Medication Tracker","Health Report","Extra Features"]
 )
 
 # ---------------- CHATBOT ---------------- #
-
 if menu == "Chatbot":
 
-    question = st.text_input("Ask health question")
+    q = st.text_input("Ask health question")
 
     if st.button("Ask"):
-        response = ask_health_question(question)
-        st.write(response)
+        st.write(ask_health_question(q))
 
 
-# ---------------- BMI CALCULATOR ---------------- #
-
+# ---------------- BMI ---------------- #
 elif menu == "BMI Calculator":
 
-    weight = st.number_input("Weight (kg)")
-    height = st.number_input("Height (cm)")
+    w = st.number_input("Weight (kg)")
+    h = st.number_input("Height (cm)")
 
-    if st.button("Calculate BMI"):
+    if st.button("Calculate"):
+        bmi = calculate_bmi(w, h)
+        st.write("BMI:", bmi)
 
-        bmi = calculate_bmi(weight, height)
-
-        st.write("Your BMI:", bmi)
-
-        # BMI Visualization
+        # Visualization
         bmi_values = [18, 22, 25, 28, 30]
-
         fig, ax = plt.subplots()
-        ax.plot(bmi_values, marker="o")
-        ax.set_title("Sample BMI Trend")
-
+        ax.plot(bmi_values)
         st.pyplot(fig)
 
 
-# ---------------- MEDICATION TRACKER ---------------- #
-
+# ---------------- MEDICATION ---------------- #
 elif menu == "Medication Tracker":
 
-    name = st.text_input("Medicine Name")
-    time = st.text_input("Time (HH:MM)")
+    name = st.text_input("Medicine")
+    time = st.text_input("Time")
 
-    if st.button("Add Medication"):
-
+    if st.button("Add"):
         add_new_medication(name, time)
-        st.success("Medication Added")
+        st.success("Added")
 
-    if st.button("Show Medications"):
+    if st.button("Show"):
+        st.table(list_medications())
 
-        meds = list_medications()
-        st.table(meds)
+    st.subheader("Check Interaction")
+
+    m1 = st.text_input("Medicine 1")
+    m2 = st.text_input("Medicine 2")
+
+    if st.button("Check"):
+        st.write(check_interaction(m1, m2))
 
 
 # ---------------- HEALTH REPORT ---------------- #
-
 elif menu == "Health Report":
 
-    st.subheader("Simple Health Report")
+    st.write("### Medications")
+    st.table(list_medications())
 
-    meds = list_medications()
+    st.write("### Tips")
+    st.write("Maintain healthy lifestyle")
 
-    st.write("### Stored Medications")
 
-    if meds:
-        st.table(meds)
-    else:
-        st.write("No medications found")
+# ---------------- EXTRA FEATURES ---------------- #
+elif menu == "Extra Features":
 
-    st.write("### Health Tips")
-    st.write("• Maintain a healthy BMI")
-    st.write("• Take medications on time")
-    st.write("• Exercise regularly")
+    # JSON Upload
+    st.subheader("Upload JSON Data")
 
+    file = st.file_uploader("Upload JSON", type="json")
+
+    if file:
+        data = json.load(file)
+        st.write(data)
+
+    # Goal Setting
+    st.subheader("Set Health Goal")
+
+    goal = st.number_input("Target Weight")
+
+    if st.button("Save Goal"):
+        st.success(f"Goal saved: {goal} kg")
