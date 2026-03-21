@@ -36,6 +36,12 @@ This project demonstrates how artificial intelligence can assist in everyday hea
 * Shows stored medications.
 * Provides general health recommendations.
 
+### 6. JSON Data Handling
+Upload and read health data in JSON format
+
+### 7. Health Goal Tracking
+Set personal health goals (e.g., target weight)
+
 ---
 
 ## Technologies Used
@@ -111,6 +117,10 @@ streamlit run app.py
 
 ### Week 3–4 (Partial)
 
-* Integrated health tools
-* BMI data visualization
-* Simple health report generation
+Health tools integration
+BMI visualization
+Health report generation
+Medication interaction checking
+JSON data handling
+Health goal tracking
+End-to-end health monitoring workflow
