@@ -1,126 +1,152 @@
 ﻿# HealthMonAI
 # HealthMonAI
 
-HealthMonAI is an AI-powered healthcare monitoring assistant that helps users track health metrics, manage medications, and receive basic health guidance through an AI chatbot.
+HealthMonAI is an AI-powered healthcare monitoring assistant that helps users track fitness, manage medications, and receive general health guidance using an intelligent chatbot.
 
-This project demonstrates how artificial intelligence can assist in everyday health monitoring and encourage healthier lifestyles.
-
----
-
-## Project Features
-
-### 1. AI Health Chatbot
-
-* Users can ask general health-related questions.
-* The chatbot provides safe health advice.
-* Built using LangChain with Groq LLM integration.
-
-### 2. BMI Calculator (Fitness Tracking)
-
-* Users can enter weight and height.
-* The system calculates Body Mass Index (BMI).
-* Provides a simple visualization of BMI trends.
-
-### 3. Medication Tracker
-
-* Users can store medication names and scheduled times.
-* Stored data can be viewed later.
-* Uses SQLite database for persistent storage.
-
-### 4. Health Data Visualization
-
-* Displays a sample BMI trend graph using matplotlib.
-
-### 5. Simple Health Report
-
-* Shows stored medications.
-* Provides general health recommendations.
-
-### 6. JSON Data Handling
-Upload and read health data in JSON format
-
-### 7. Health Goal Tracking
-Set personal health goals (e.g., target weight)
+This project demonstrates a complete end-to-end healthcare monitoring system with AI integration and Indian healthcare features.
 
 ---
 
-## Technologies Used
+## Features
+
+### AI Health Chatbot
+
+* Ask general health-related questions
+* Provides safe health advice
+* Built using LangChain + Groq API
+
+###  BMI Calculator (Fitness Tracking)
+
+* Calculates Body Mass Index
+* Displays BMI trend visualization
+
+###  Medication Tracker
+
+* Add and store medicines with time
+* View stored medications using SQLite database
+
+###  Medication Interaction Checker
+
+* Detects possible interaction between two medicines
+
+###  Health Data Visualization
+
+* Displays BMI graph using matplotlib
+
+###  Health Report Generation
+
+* Shows stored medications
+* Provides general health tips
+
+###  JSON Data Handling
+
+* Upload and view health data in JSON format
+
+###  Health Goal Tracking
+
+* Set personal health goals (e.g., target weight)
+
+---
+
+## 🇮🇳 Indian Healthcare Features (Week 5–6)
+
+###  Indian Medicine Information
+
+* Get details about common Indian medicines (e.g., Dolo 650, Crocin)
+
+###  Indian Diet Recommendation
+
+* Suggests diet plans based on goals (weight loss/gain/maintain)
+
+###  Ayurvedic Suggestions
+
+* Provides basic Ayurvedic remedies for common problems
+
+---
+
+##  Technologies Used
 
 * Python
 * Streamlit (User Interface)
-* LangChain (AI integration)
-* Groq API (LLM inference)
+* LangChain (AI Integration)
+* Groq API (LLM)
 * SQLite (Database)
-* Matplotlib (Data visualization)
+* Matplotlib (Visualization)
 
 ---
 
-## Project Structure
+##  Project Structure
 
-```
+```id="zndfd8"
 healthmonai
 │
-├── app.py                # Main Streamlit application
-├── chatbot.py            # AI health chatbot using LangChain
-├── health_metrics.py     # BMI calculation functions
-├── medication.py         # Medication management logic
-├── database.py           # SQLite database setup
+├── app.py
+├── chatbot.py
+├── health_metrics.py
+├── medication.py
+├── database.py
 └── utils/
-    └── reminder.py       # Medication reminder service
+    └── reminder.py
 ```
 
 ---
 
-## How to Run the Project
+##  How to Run the Project
 
 1. Clone the repository
 
-```
+```id="iq8c7v"
 git clone https://github.com/Jayavanthsanaboina/HealthMonAI.git
 ```
 
 2. Navigate to the project folder
 
-```
+```id="k81w8r"
 cd HealthMonAI
 ```
 
 3. Install required libraries
 
-```
+```id="uh3xyl"
 pip install streamlit langchain langchain-groq matplotlib
 ```
 
-4. Add your Groq API key in `chatbot.py`
+4. Add your API key in `chatbot.py`
 
-```
+```id="l3a7w2"
 os.environ["GROQ_API_KEY"] = "YOUR_GROQ_API_KEY"
 ```
 
 5. Run the application
 
-```
+```id="f3m8l2"
 streamlit run app.py
 ```
 
 ---
 
-## Weekly Progress
+##  Weekly Progress
 
 ### Week 1–2
 
 * Project setup
-* AI chatbot implementation
+* AI chatbot
 * BMI calculator
 * Medication tracker
-* SQLite database integration
+* SQLite database
 
-### Week 3–4 (Partial)
+### Week 3–4
 
-Health tools integration
-BMI visualization
-Health report generation
-Medication interaction checking
-JSON data handling
-Health goal tracking
-End-to-end health monitoring workflow
+* Health tools integration
+* BMI visualization
+* Health report generation
+* Medication interaction checking
+* JSON data handling
+* Goal tracking
+* End-to-end workflow
+
+### Week 5–6 (Half Completed)
+
+* Indian medicine database
+* Diet recommendation system
+* Ayurvedic health suggestions
