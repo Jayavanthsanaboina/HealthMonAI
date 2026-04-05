@@ -12,7 +12,18 @@ menu = st.sidebar.selectbox(
     "Menu",
     ["Chatbot","BMI Calculator","Medication Tracker","Health Report","Extra Features","Indian Health Features"]
 )
+doctors_db = {
+    "Hyderabad": [
+        {"name": "Dr. Reddy", "specialization": "Cardiologist"},
+        {"name": "Dr. Kumar", "specialization": "General"}
+    ],
+    "Delhi": [
+        {"name": "Dr. Sharma", "specialization": "Dermatologist"}
+    ]
+}
 
+def get_doctors(city):
+    return doctors_db.get(city, "No doctors found")
 # ---------------- CHATBOT ---------------- #
 if menu == "Chatbot":
 
@@ -136,3 +147,30 @@ elif menu == "Indian Health Features":
 
         else:
             st.write("Consult Ayurvedic doctor")
+    #finding doctors
+    st.subheader("Find Doctors")
+    city = st.text_input("Enter City")
+
+    if st.button("Find Doctors"):
+        data = get_doctors(city)
+
+        if isinstance(data, list):
+            for doc in data:
+                st.write(doc["name"], "-", doc["specialization"])
+        else:
+            st.write(data)
+    st.subheader("Medical History")
+
+    history = st.text_area("Enter your history")
+
+    if st.button("Save"):
+        st.success("Saved successfully")        
+    #insurance
+    st.subheader("Insurance")
+
+    option = st.selectbox("Do you have insurance?", ["Yes", "No"])
+
+    if option == "Yes":
+        st.write("You are covered")
+    else:
+        st.write("Consider getting insurance")
