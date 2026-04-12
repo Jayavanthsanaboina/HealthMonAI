@@ -3,7 +3,7 @@
 
 HealthMonAI is an AI-powered healthcare monitoring assistant that helps users track fitness, manage medications, and receive general health guidance through an intelligent chatbot.
 
-This project demonstrates a complete end-to-end healthcare monitoring system with AI integration and Indian healthcare features.
+This project provides a complete end-to-end healthcare workflow with a professional interface and Indian healthcare support features.
 
 ---
 
@@ -12,35 +12,38 @@ This project demonstrates a complete end-to-end healthcare monitoring system wit
 ### 🤖 AI Health Chatbot
 
 * Ask general health-related questions
-* Provides safe health advice
-* Built using LangChain + Groq API
+* Provides safe and basic health advice
+* Includes error handling for API failures
 
-### 🏃 BMI Calculator (Fitness Tracking)
+### 🏃 BMI Calculator
 
 * Calculates Body Mass Index (BMI)
-* Displays BMI trend visualization
+* Displays BMI trend visualization using graphs
+* Includes input validation for accurate results
 
 ### 💊 Medication Tracker
 
 * Add and store medicines with time
-* View stored medications using SQLite database
+* View stored medications
+* Check medicine interactions
+* Get basic medicine information
 
-### ⚠ Medication Interaction Checker
+### 📊 Health Dashboard
 
-* Detects possible interaction between two medicines
+* Displays key health metrics
+* Shows BMI and goal tracking
+* Provides a quick overview of user health
 
-### 📊 Health Data Visualization
+### 📄 Health Report
 
-* Displays BMI graph using matplotlib
-
-### 📄 Health Report Generation
-
-* Shows stored medications
+* Displays stored medications
 * Provides general health tips
+* Export report as CSV file
 
-### 📁 JSON Data Handling
+### 📁 Data Handling
 
-* Upload and view health data in JSON format
+* Upload and display JSON health data
+* Supports multiple data formats
 
 ### 🎯 Health Goal Tracking
 
@@ -50,53 +53,52 @@ This project demonstrates a complete end-to-end healthcare monitoring system wit
 
 ## 🇮🇳 Indian Healthcare Features
 
-### 💊 Indian Medicine Information
+### 💊 Medicine Information
 
-* Get details about common Indian medicines (e.g., Dolo 650, Crocin)
+* Get details about common Indian medicines
 
-### 🥗 Indian Diet Recommendation
+### 🥗 Diet Recommendation
 
-* Suggests diet plans based on goals (weight loss/gain/maintain)
+* Suggests diet plans for weight loss, gain, or maintenance
 
 ### 🌿 Ayurvedic Suggestions
 
-* Provides basic Ayurvedic remedies for common problems
+* Provides natural remedies for common problems
 
-### 🩺 Doctor Suggestion System (Local Database)
+### 🩺 Doctor Suggestion System
 
-* Suggests doctors based on city input
-* Simulates real-world healthcare platforms
-* Implemented using a local dataset instead of external APIs
+* Suggests doctors based on city
+* Implemented using a local database (simulated API)
 
-### 📋 Medical History Tracking
+### 📋 Medical History
 
-* Users can enter and store basic medical history
+* Allows users to input and store basic medical history
 
 ### 🛡 Insurance Support
 
-* Allows users to input insurance information
-* Provides basic awareness
+* Basic insurance awareness feature
 
-### 🌍 Regional Health Preferences
+### 🌍 Regional Preferences
 
-* Suggests diet based on region (North/South India)
+* Suggests diet based on region
 
 ---
 
 ## 🛠 Technologies Used
 
 * Python
-* Streamlit (User Interface)
-* LangChain (AI Integration)
-* Groq API (LLM)
-* SQLite (Database)
-* Matplotlib (Visualization)
+* Streamlit
+* LangChain
+* Groq API
+* SQLite
+* Matplotlib
+* Pandas
 
 ---
 
 ## 📁 Project Structure
 
-```id="y1l2n3"
+```
 healthmonai
 │
 ├── app.py
@@ -114,31 +116,31 @@ healthmonai
 
 1. Clone the repository
 
-```id="c1d2e3"
+```
 git clone https://github.com/Jayavanthsanaboina/HealthMonAI.git
 ```
 
-2. Navigate to the project folder
+2. Navigate to project folder
 
-```id="f4g5h6"
+```
 cd HealthMonAI
 ```
 
-3. Install required libraries
+3. Install dependencies
 
-```id="i7j8k9"
-pip install streamlit langchain langchain-groq matplotlib
+```
+pip install streamlit langchain langchain-groq matplotlib pandas
 ```
 
-4. Add your API key in `chatbot.py`
+4. Add API key in chatbot.py
 
-```id="l0m1n2"
-os.environ["GROQ_API_KEY"] = "YOUR_GROQ_API_KEY"
+```
+os.environ["GROQ_API_KEY"] = "YOUR_API_KEY"
 ```
 
 5. Run the application
 
-```id="o3p4q5"
+```
 streamlit run app.py
 ```
 
@@ -152,24 +154,46 @@ streamlit run app.py
 * AI chatbot
 * BMI calculator
 * Medication tracker
-* SQLite database
+* Database integration
 
 ### Week 3–4
 
 * Health tools integration
-* BMI visualization
+* Data visualization
 * Health report generation
 * Medication interaction checking
-* JSON data handling
+* JSON handling
 * Goal tracking
-* End-to-end workflow
 
 ### Week 5–6
 
-* Indian medicine database
-* Diet recommendation system
+* Indian healthcare features
+* Diet recommendation
 * Ayurvedic suggestions
-* Doctor suggestion system (local database)
-* Medical history tracking
+* Doctor system (local database)
+* Medical history
 * Insurance support
-* Regional personalization
+
+### Week 7–8
+
+* Professional dashboard
+* Input validation
+* Error handling
+* Export functionality (CSV)
+* UI improvements
+* Production-ready application
+
+---
+
+## 🎬 Demo Video
+
+The demo video (5–7 minutes) showcases:
+
+* Dashboard overview
+* Chatbot interaction
+* BMI calculation with graph
+* Medication tracking
+* Report export
+* Indian healthcare features
+
+---
