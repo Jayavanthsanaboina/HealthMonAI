@@ -1,90 +1,76 @@
 ﻿# HealthMonAI
-# HealthMonAI
+#  HealthMonAI – AI Healthcare Assistant
 
-HealthMonAI is an AI-powered healthcare monitoring assistant that helps users track fitness, manage medications, and receive general health guidance through an intelligent chatbot.
+HealthMonAI is a full-stack AI-powered healthcare monitoring application that helps users manage fitness, medications, and general health guidance through an interactive interface.
 
-This project provides a complete end-to-end healthcare workflow with a professional interface and Indian healthcare support features.
+The system provides an end-to-end healthcare workflow including chatbot assistance, health tracking, reporting, and Indian healthcare features.
 
 ---
 
-## 🚀 Features
+##  Live Application
 
-### 🤖 AI Health Chatbot
+🔗 **Deployed App:**
+https://healthmonai-3qnhcdqnm4g3eux2r4f96h.streamlit.app
 
-* Ask general health-related questions
-* Provides safe and basic health advice
-* Includes error handling for API failures
+🔗 **GitHub Repository:**
+https://github.com/Jayavanthsanaboina/HealthMonAI
 
-### 🏃 BMI Calculator
+---
 
-* Calculates Body Mass Index (BMI)
-* Displays BMI trend visualization using graphs
-* Includes input validation for accurate results
+##  Features
 
-### 💊 Medication Tracker
+###  AI Health Chatbot
 
-* Add and store medicines with time
-* View stored medications
-* Check medicine interactions
-* Get basic medicine information
+* Provides general health advice using AI
+* Handles errors safely
+* Uses Groq API for fast responses
 
-### 📊 Health Dashboard
+###  Health Dashboard
 
-* Displays key health metrics
-* Shows BMI and goal tracking
-* Provides a quick overview of user health
+* Displays BMI and goal tracking
+* Gives quick health summary
+
+###  BMI Calculator
+
+* Calculates BMI based on weight & height
+* Displays graphical visualization
+* Includes input validation
+
+###  Medication Tracker
+
+* Add and store medications
+* View medication list
+* Check drug interactions
+* Get medicine information
 
 ### 📄 Health Report
 
-* Displays stored medications
-* Provides general health tips
-* Export report as CSV file
+* Shows medication data
+* Provides health tips
+* Export report as CSV
 
-### 📁 Data Handling
+###  Data Handling
 
-* Upload and display JSON health data
-* Supports multiple data formats
+* Upload and view JSON health data
 
-### 🎯 Health Goal Tracking
+###  Health Goal Tracking
 
-* Set personal health goals (e.g., target weight)
+* Set and monitor personal health goals
 
 ---
 
 ## 🇮🇳 Indian Healthcare Features
 
-### 💊 Medicine Information
-
-* Get details about common Indian medicines
-
-### 🥗 Diet Recommendation
-
-* Suggests diet plans for weight loss, gain, or maintenance
-
-### 🌿 Ayurvedic Suggestions
-
-* Provides natural remedies for common problems
-
-### 🩺 Doctor Suggestion System
-
-* Suggests doctors based on city
-* Implemented using a local database (simulated API)
-
-### 📋 Medical History
-
-* Allows users to input and store basic medical history
-
-### 🛡 Insurance Support
-
-* Basic insurance awareness feature
-
-### 🌍 Regional Preferences
-
-* Suggests diet based on region
+*  Diet recommendations (weight loss/gain/maintain)
+*  Ayurvedic suggestions
+*  Doctor finder (city-based local database)
+*  Medical history input
+*  Insurance awareness
+*  Regional health preferences
 
 ---
 
-## 🛠 Technologies Used
+##  Technologies Used
 
 * Python
 * Streamlit
@@ -96,23 +82,23 @@ This project provides a complete end-to-end healthcare workflow with a professio
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
-healthmonai
+HealthMonAI/
 │
 ├── app.py
 ├── chatbot.py
 ├── health_metrics.py
 ├── medication.py
 ├── database.py
-└── utils/
-    └── reminder.py
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
-## ▶ How to Run the Project
+##  How to Run Locally
 
 1. Clone the repository
 
@@ -120,7 +106,7 @@ healthmonai
 git clone https://github.com/Jayavanthsanaboina/HealthMonAI.git
 ```
 
-2. Navigate to project folder
+2. Navigate to folder
 
 ```
 cd HealthMonAI
@@ -129,16 +115,16 @@ cd HealthMonAI
 3. Install dependencies
 
 ```
-pip install streamlit langchain langchain-groq matplotlib pandas
+pip install -r requirements.txt
 ```
 
-4. Add API key in chatbot.py
+4. Add API key (Groq)
 
 ```
-os.environ["GROQ_API_KEY"] = "YOUR_API_KEY"
+set GROQ_API_KEY=your_api_key   (Windows)
 ```
 
-5. Run the application
+5. Run app
 
 ```
 streamlit run app.py
@@ -146,54 +132,74 @@ streamlit run app.py
 
 ---
 
-## 📅 Weekly Progress
+##  Deployment
+
+The application is deployed using **Streamlit Community Cloud**.
+
+### Steps:
+
+* Code hosted on GitHub
+* `requirements.txt` added
+* API key stored securely using Streamlit Secrets
+* App deployed via Streamlit Cloud dashboard
+
+---
+
+##  Development Timeline
 
 ### Week 1–2
 
 * Project setup
-* AI chatbot
+* Chatbot
 * BMI calculator
 * Medication tracker
-* Database integration
 
 ### Week 3–4
 
-* Health tools integration
-* Data visualization
-* Health report generation
-* Medication interaction checking
+* Health data visualization
+* Report generation
 * JSON handling
 * Goal tracking
 
 ### Week 5–6
 
 * Indian healthcare features
-* Diet recommendation
+* Diet system
 * Ayurvedic suggestions
-* Doctor system (local database)
+* Doctor system
 * Medical history
-* Insurance support
 
 ### Week 7–8
 
-* Professional dashboard
+* Dashboard UI
 * Input validation
 * Error handling
-* Export functionality (CSV)
-* UI improvements
-* Production-ready application
+* Export feature
+* Deployment
 
 ---
 
-## 🎬 Demo Video
+##  Demo Video
 
-The demo video (5–7 minutes) showcases:
+The demo video demonstrates:
 
 * Dashboard overview
 * Chatbot interaction
-* BMI calculation with graph
+* BMI calculation
 * Medication tracking
 * Report export
 * Indian healthcare features
 
 ---
+
+##  Disclaimer
+
+This project is for educational purposes only.
+It does not provide medical diagnosis. Always consult a qualified doctor for serious conditions.
+
+---
+
+##  Author
+
+**Satya Jayavanth**
+B.Tech Student
