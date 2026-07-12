@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 
 import theme
+import auth
 from chatbot import ask_health_question
 from health_metrics import (
     calculate_bmi,
@@ -29,6 +30,112 @@ st.set_page_config(
 )
 
 st.markdown(theme.inject(), unsafe_allow_html=True)
+
+# ---------------- AUTHENTICATION ---------------- #
+
+auth.init_db()
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+if "username" not in st.session_state:
+    st.session_state.username = ""
+
+if not st.session_state.logged_in:
+
+    st.markdown(
+        theme.pulse_header(
+            "HealthMonAI",
+            "Your AI-powered personal health monitor"
+        ),
+        unsafe_allow_html=True
+    )
+
+    st.markdown(theme.section_eyebrow("🔐", "SECURE ACCESS"), unsafe_allow_html=True)
+    st.markdown(
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:1.3rem;'
+        'font-weight:600;margin-bottom:14px;">Sign in to continue</div>',
+        unsafe_allow_html=True
+    )
+
+    login_tab, signup_tab = st.tabs(["🔑 Login", "🆕 Sign Up"])
+
+    with login_tab:
+
+        st.markdown(theme.card_open(), unsafe_allow_html=True)
+
+        login_username = st.text_input(
+            "Username",
+            key="login_username",
+            placeholder="Enter your username"
+        )
+
+        login_password = st.text_input(
+            "Password",
+            key="login_password",
+            type="password",
+            placeholder="Enter your password"
+        )
+
+        if st.button("Login", key="login_btn"):
+
+            if login_username.strip() == "" or login_password.strip() == "":
+                st.warning("Please enter both username and password.")
+
+            elif auth.verify_user(login_username, login_password):
+                st.session_state.logged_in = True
+                st.session_state.username = login_username
+                st.rerun()
+
+            else:
+                st.error("Invalid username or password.")
+
+        st.markdown(theme.card_close(), unsafe_allow_html=True)
+
+    with signup_tab:
+
+        st.markdown(theme.card_open(), unsafe_allow_html=True)
+
+        new_username = st.text_input(
+            "Choose a username",
+            key="signup_username",
+            placeholder="Example: john_doe"
+        )
+
+        new_password = st.text_input(
+            "Choose a password",
+            key="signup_password",
+            type="password",
+            placeholder="At least 6 characters"
+        )
+
+        confirm_password = st.text_input(
+            "Confirm password",
+            key="signup_confirm",
+            type="password",
+            placeholder="Re-enter your password"
+        )
+
+        if st.button("Create Account", key="signup_btn"):
+
+            if new_username.strip() == "" or new_password.strip() == "":
+                st.warning("Please fill in all fields.")
+
+            elif len(new_password) < 6:
+                st.warning("Password must be at least 6 characters.")
+
+            elif new_password != confirm_password:
+                st.warning("Passwords do not match.")
+
+            elif auth.user_exists(new_username):
+                st.error("Username already taken. Please choose another.")
+
+            else:
+                auth.create_user(new_username, new_password)
+                st.success("Account created successfully! Please log in from the Login tab.")
+
+        st.markdown(theme.card_close(), unsafe_allow_html=True)
+
+    st.stop()
 
 # ---------------- HEADER ---------------- #
 
@@ -64,6 +171,18 @@ menu = st.sidebar.radio(
     ],
     label_visibility="collapsed"
 )
+
+st.sidebar.markdown("---")
+
+st.sidebar.markdown(
+    f'<div class="pulse-caption">Signed in as <b>{st.session_state.username}</b></div>',
+    unsafe_allow_html=True
+)
+
+if st.sidebar.button("🚪 Logout"):
+    st.session_state.logged_in = False
+    st.session_state.username = ""
+    st.rerun()
 
 st.sidebar.markdown("---")
 
@@ -423,11 +542,17 @@ elif menu == "💊 Medication Center":
 
         st.subheader("Add New Medication")
 
-        med_name = st.text_input("Medicine Name")
+        med_name = st.text_input(
+            "Medicine Name",
+            placeholder="Example: Paracetamol"
+        )
 
         med_time = st.time_input("Medicine Time")
 
-        dosage = st.text_input("Dosage (Example: 500mg)")
+        dosage = st.text_input(
+            "Dosage (Example: 500mg)",
+            placeholder="Example: 500mg"
+        )
 
         if st.button("➕ Add Medication"):
 
@@ -463,9 +588,15 @@ elif menu == "💊 Medication Center":
 
         st.subheader("Drug Interaction Checker")
 
-        medicine1 = st.text_input("Medicine 1")
+        medicine1 = st.text_input(
+            "Medicine 1",
+            placeholder="Example: Aspirin"
+        )
 
-        medicine2 = st.text_input("Medicine 2")
+        medicine2 = st.text_input(
+            "Medicine 2",
+            placeholder="Example: Ibuprofen"
+        )
 
         if st.button("Check Interaction"):
 
@@ -483,7 +614,8 @@ elif menu == "💊 Medication Center":
         st.subheader("🤖 AI Medicine Information")
 
         medicine = st.text_input(
-            "Enter Medicine Name"
+            "Enter Medicine Name",
+            placeholder="Example: Metformin"
         )
 
         if st.button("Get AI Information"):
@@ -829,7 +961,8 @@ Daily Calories
         st.subheader("🌿 AI Ayurvedic Assistant")
 
         symptoms = st.text_area(
-            "Describe your symptoms"
+            "Describe your symptoms",
+            placeholder="Example: Frequent headaches, poor digestion, low energy in the mornings..."
         )
 
         if st.button("Get Ayurvedic Advice"):
