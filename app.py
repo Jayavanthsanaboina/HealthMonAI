@@ -4,6 +4,7 @@ import pandas as pd
 import json
 from datetime import datetime
 
+import theme
 from chatbot import ask_health_question
 from health_metrics import (
     calculate_bmi,
@@ -22,22 +23,33 @@ from medication import (
 
 st.set_page_config(
     page_title="HealthMonAI",
-    page_icon="🏥",
+    page_icon="🫀",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
+st.markdown(theme.inject(), unsafe_allow_html=True)
+
 # ---------------- HEADER ---------------- #
 
-st.title("🏥 HealthMonAI")
-st.caption("AI-Powered Personal Healthcare Assistant")
-st.markdown("---")
+st.markdown(
+    theme.pulse_header(
+        "HealthMonAI",
+        "Your AI-powered personal health monitor"
+    ),
+    unsafe_allow_html=True
+)
 
 # ---------------- SIDEBAR ---------------- #
 
-st.sidebar.title("🏥 HealthMonAI")
-
-st.sidebar.markdown("### Navigation")
+st.sidebar.markdown(
+    '<div class="pulse-title" style="font-size:1.35rem;">🫀 HealthMonAI</div>',
+    unsafe_allow_html=True
+)
+st.sidebar.markdown(
+    '<div class="pulse-caption" style="margin-bottom:14px;">Navigation</div>',
+    unsafe_allow_html=True
+)
 
 menu = st.sidebar.radio(
     "",
@@ -49,7 +61,8 @@ menu = st.sidebar.radio(
         "📄 Health Report",
         "🎯 Health Goals",
         "🇮🇳 Indian Healthcare"
-    ]
+    ],
+    label_visibility="collapsed"
 )
 
 st.sidebar.markdown("---")
@@ -76,97 +89,118 @@ st.sidebar.info(
 
 if menu == "🏠 Dashboard":
 
-    st.header("📊 Personal Health Dashboard")
+    st.markdown(theme.section_eyebrow("📊", "LIVE READOUT"), unsafe_allow_html=True)
+    st.markdown(
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:1.3rem;'
+        'font-weight:600;margin-bottom:14px;">Personal Health Dashboard</div>',
+        unsafe_allow_html=True
+    )
 
     col1, col2, col3, col4 = st.columns(4)
 
-    col1.metric("❤️ Heart Rate", "72 BPM")
-    col2.metric("⚖ BMI", "22.4")
-    col3.metric("💧 Water Intake", "2.5 L")
-    col4.metric("🚶 Daily Steps", "6500")
+    with col1:
+        st.markdown(
+            theme.vital_card("❤️", "Heart Rate", "72 BPM", "Resting · steady", "steady"),
+            unsafe_allow_html=True
+        )
+    with col2:
+        st.markdown(
+            theme.vital_card("⚖️", "BMI", "22.4", "Normal range", "steady"),
+            unsafe_allow_html=True
+        )
+    with col3:
+        st.markdown(
+            theme.vital_card("💧", "Water Intake", "2.5 L", "0.3L below goal", "watch"),
+            unsafe_allow_html=True
+        )
+    with col4:
+        st.markdown(
+            theme.vital_card("🚶", "Daily Steps", "6,500", "3,500 to goal", "watch"),
+            unsafe_allow_html=True
+        )
 
-    st.markdown("---")
+    st.markdown("<div style='height:22px'></div>", unsafe_allow_html=True)
 
     left, right = st.columns(2)
 
     with left:
-
-        st.subheader("💊 Today's Medication")
-
-        st.success("Vitamin D - 9:00 AM")
-
-        st.info("Crocin - 8:00 PM")
-
-        st.subheader("🎯 Goal Progress")
-
-        st.progress(70)
-
-        st.write("70% Goal Completed")
-
-    with right:
-
-        st.subheader("🌞 Today's Health Tip")
-
-        st.success(
-            "Drink at least 2.5L of water, walk for 30 minutes, "
-            "and include fresh fruits in your meals."
+        st.markdown(theme.section_eyebrow("💊", "TODAY'S MEDICATION"), unsafe_allow_html=True)
+        st.markdown(
+            theme.card_open()
+            + theme.timeline_item("9:00 AM", "Vitamin D — taken", "steady")
+            + theme.timeline_item("8:00 PM", "Crocin — upcoming", "watch")
+            + theme.card_close(),
+            unsafe_allow_html=True
         )
 
-        st.subheader("😊 Overall Health Score")
+        st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+        st.markdown(theme.section_eyebrow("🎯", "GOAL PROGRESS"), unsafe_allow_html=True)
+        st.progress(70)
+        st.markdown(
+            '<div class="vital-sub" style="margin-top:-8px;">70% of weekly goal completed</div>',
+            unsafe_allow_html=True
+        )
 
-        st.metric("Health Score", "92%", "+3%")
+    with right:
+        st.markdown(theme.section_eyebrow("🌞", "TODAY'S HEALTH TIP"), unsafe_allow_html=True)
+        st.markdown(
+            theme.card_open()
+            + '<span style="color:var(--ink);">Drink at least 2.5L of water, '
+              'walk for 30 minutes, and include fresh fruits in your meals.</span>'
+            + theme.card_close(),
+            unsafe_allow_html=True
+        )
 
-    st.markdown("---")
+        st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+        st.markdown(theme.section_eyebrow("😊", "OVERALL HEALTH SCORE"), unsafe_allow_html=True)
+        st.markdown(
+            theme.vital_card("📈", "Health Score", "92%", "+3% vs last week", "steady"),
+            unsafe_allow_html=True
+        )
 
-    st.subheader("📈 Weekly BMI Trend")
+    st.markdown("<div style='height:26px'></div>", unsafe_allow_html=True)
+    st.markdown(theme.section_eyebrow("📈", "WEEKLY BMI TREND"), unsafe_allow_html=True)
 
     bmi_data = [22.1, 22.0, 22.3, 22.5, 22.4, 22.2, 22.4]
 
-    fig, ax = plt.subplots(figsize=(8,4))
-
-    ax.plot(bmi_data, marker="o")
-
+    fig, ax = plt.subplots(figsize=(8, 3.2))
+    ax.plot(bmi_data, marker="o", color=theme.COLORS["mint"], linewidth=2,
+            markerfacecolor=theme.COLORS["bg_deep"], markeredgecolor=theme.COLORS["mint"],
+            markersize=7)
     ax.set_xlabel("Days")
-
     ax.set_ylabel("BMI")
-
-    ax.grid(True)
-
+    theme.style_chart(fig, ax)
+    fig.tight_layout()
     st.pyplot(fig)
 
-    st.markdown("---")
+    st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+    st.markdown(theme.section_eyebrow("📅", "TODAY'S SUMMARY"), unsafe_allow_html=True)
 
-    st.subheader("📅 Today's Summary")
-
-    summary = pd.DataFrame(
-        {
-            "Category": [
-                "Water",
-                "Exercise",
-                "Medicines",
-                "Sleep"
-            ],
-            "Status": [
-                "Completed",
-                "Completed",
-                "Pending",
-                "7 Hours"
-            ]
-        }
+    st.markdown(
+        theme.card_open()
+        + theme.summary_row("Water", "Completed", "steady")
+        + theme.summary_row("Exercise", "Completed", "steady")
+        + theme.summary_row("Medicines", "Pending", "watch")
+        + theme.summary_row("Sleep", "7 Hours", "steady")
+        + theme.card_close(),
+        unsafe_allow_html=True
     )
-
-    st.table(summary)
 # ---------------- AI CHATBOT ---------------- #
 
 elif menu == "🤖 AI Chatbot":
 
-    st.header("🤖 AI Health Assistant")
-
-    st.write("Ask any general health-related question.")
+    st.markdown(theme.section_eyebrow("🤖", "AI ASSISTANT"), unsafe_allow_html=True)
+    st.markdown(
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:1.3rem;'
+        'font-weight:600;margin-bottom:6px;">Ask HealthMonAI</div>'
+        '<div class="pulse-caption">Ask any general health-related question.</div>',
+        unsafe_allow_html=True
+    )
 
     question = st.text_area(
         "Enter your health question",
-        placeholder="Example: How can I reduce my blood pressure naturally?"
+        placeholder="Example: How can I reduce my blood pressure naturally?",
+        label_visibility="collapsed"
     )
 
     if st.button("🤖 Ask AI"):
@@ -175,27 +209,30 @@ elif menu == "🤖 AI Chatbot":
             st.warning("Please enter a question.")
 
         else:
+            placeholder = st.empty()
+            placeholder.markdown(theme.thinking_pulse("Generating response"), unsafe_allow_html=True)
 
-            with st.spinner("Generating response..."):
+            try:
+                answer = ask_health_question(question)
+                placeholder.empty()
+                st.markdown(theme.chat_bubble("user", question), unsafe_allow_html=True)
+                st.markdown(theme.chat_bubble("assistant", answer), unsafe_allow_html=True)
 
-                try:
-
-                    answer = ask_health_question(question)
-
-                    st.success("Response")
-
-                    st.write(answer)
-
-                except:
-
-                    st.error("Unable to generate response.")
+            except Exception:
+                placeholder.empty()
+                st.error("Unable to generate response.")
 
 
 # ---------------- BMI CALCULATOR ---------------- #
 
 elif menu == "📊 BMI Calculator":
 
-    st.header("📊 BMI & Health Metrics")
+    st.markdown(theme.section_eyebrow("📊", "METRICS"), unsafe_allow_html=True)
+    st.markdown(
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:1.3rem;'
+        'font-weight:600;margin-bottom:14px;">BMI & Health Metrics</div>',
+        unsafe_allow_html=True
+    )
 
     col1, col2 = st.columns(2)
 
@@ -247,11 +284,10 @@ elif menu == "📊 BMI Calculator":
 
         bmi = calculate_bmi(weight, height)
 
-        st.success(f"Your BMI is {bmi}")
-
         if bmi < 18.5:
 
-            status = "🔵 Underweight"
+            status = "Underweight"
+            bmi_state = "watch"
 
             recommendation = """
 Increase healthy calories.
@@ -263,7 +299,8 @@ Strength training is recommended.
 
         elif bmi < 25:
 
-            status = "🟢 Healthy"
+            status = "Healthy"
+            bmi_state = "steady"
 
             recommendation = """
 Maintain balanced diet.
@@ -275,7 +312,8 @@ Drink enough water.
 
         elif bmi < 30:
 
-            status = "🟠 Overweight"
+            status = "Overweight"
+            bmi_state = "watch"
 
             recommendation = """
 Reduce sugary foods.
@@ -287,7 +325,8 @@ Increase vegetables.
 
         else:
 
-            status = "🔴 Obese"
+            status = "Obese"
+            bmi_state = "attention"
 
             recommendation = """
 Consult a healthcare professional.
@@ -297,17 +336,22 @@ Follow a structured exercise plan.
 Reduce processed food intake.
 """
 
-        st.metric("BMI", bmi)
+        st.markdown(
+            theme.vital_card("⚖️", "Your BMI", str(bmi), status, bmi_state),
+            unsafe_allow_html=True
+        )
 
-        st.info(status)
+        st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
+        st.markdown(theme.section_eyebrow("💡", "HEALTH RECOMMENDATION"), unsafe_allow_html=True)
+        st.markdown(
+            theme.card_open()
+            + recommendation.replace("\n\n", "<br>")
+            + theme.card_close(),
+            unsafe_allow_html=True
+        )
 
-        st.subheader("Health Recommendation")
-
-        st.write(recommendation)
-
-        st.markdown("---")
-
-        st.subheader("BMI Categories")
+        st.markdown("<div style='height:22px'></div>", unsafe_allow_html=True)
+        st.markdown(theme.section_eyebrow("📊", "BMI CATEGORIES"), unsafe_allow_html=True)
 
         bmi_chart = {
             "Underweight":18.5,
@@ -320,41 +364,49 @@ Reduce processed food intake.
 
         ax.bar(
             bmi_chart.keys(),
-            bmi_chart.values()
+            bmi_chart.values(),
+            color=[theme.COLORS["mint"], theme.COLORS["mint"],
+                   theme.COLORS["amber"], theme.COLORS["coral"]]
         )
 
         ax.set_ylabel("BMI")
 
         ax.set_title("BMI Categories")
 
+        theme.style_chart(fig, ax)
+        fig.tight_layout()
+
         st.pyplot(fig)
 
-        st.markdown("---")
-
-        st.subheader("Ideal Lifestyle Tips")
+        st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+        st.markdown(theme.section_eyebrow("🧘", "IDEAL LIFESTYLE TIPS"), unsafe_allow_html=True)
 
         tips = [
-
             "💧 Drink 2–3 litres of water",
-
             "🥗 Eat fresh fruits and vegetables",
-
             "🏃 Exercise at least 30 minutes",
-
             "😴 Sleep 7–8 hours",
-
             "🧘 Practice stress management"
-
         ]
 
-        for tip in tips:
+        tips_html = "".join(
+            f'<div class="timeline-item"><div class="timeline-dot" '
+            f'style="background:{theme.COLORS["mint"]};box-shadow:0 0 8px {theme.COLORS["mint"]};"></div>'
+            f'<div class="timeline-text"><span>{tip}</span></div></div>'
+            for tip in tips
+        )
 
-            st.write("✅", tip)
+        st.markdown(theme.card_open() + tips_html + theme.card_close(), unsafe_allow_html=True)
 # ---------------- MEDICATION CENTER ---------------- #
 
 elif menu == "💊 Medication Center":
 
-    st.header("💊 Medication Center")
+    st.markdown(theme.section_eyebrow("💊", "MEDICATION"), unsafe_allow_html=True)
+    st.markdown(
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:1.3rem;'
+        'font-weight:600;margin-bottom:14px;">Medication Center</div>',
+        unsafe_allow_html=True
+    )
 
     tab1, tab2, tab3, tab4 = st.tabs(
         [
@@ -396,7 +448,10 @@ elif menu == "💊 Medication Center":
 
         if medicines:
 
-            st.table(medicines)
+            rows = "".join(
+                theme.timeline_item(t, name, "steady") for name, t in medicines
+            )
+            st.markdown(theme.card_open() + rows + theme.card_close(), unsafe_allow_html=True)
 
         else:
 
@@ -440,6 +495,8 @@ elif menu == "💊 Medication Center":
             else:
 
                 try:
+                    placeholder = st.empty()
+                    placeholder.markdown(theme.thinking_pulse("Looking up medicine info"), unsafe_allow_html=True)
 
                     answer = ask_health_question(
                         f"""
@@ -463,9 +520,8 @@ Keep the response simple and easy to understand.
 """
                     )
 
-                    st.success("Medicine Information")
-
-                    st.write(answer)
+                    placeholder.empty()
+                    st.markdown(theme.chat_bubble("assistant", answer), unsafe_allow_html=True)
 
                 except:
 
@@ -473,46 +529,48 @@ Keep the response simple and easy to understand.
                         "Unable to fetch medicine information."
                     )
 # ---------------- HEALTH REPORT ---------------- #
-
 elif menu == "📄 Health Report":
 
-    st.header("📄 Personal Health Report")
+    st.markdown(theme.section_eyebrow("📄", "REPORT"), unsafe_allow_html=True)
+    st.markdown(
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:1.3rem;'
+        'font-weight:600;margin-bottom:6px;">Personal Health Report</div>',
+        unsafe_allow_html=True
+    )
 
     today = datetime.now().strftime("%d %B %Y")
 
-    st.info(f"Report Generated on: {today}")
-
-    st.markdown("---")
+    st.markdown(
+        f'<div class="pulse-caption" style="margin-bottom:16px;">Generated on {today}</div>',
+        unsafe_allow_html=True
+    )
 
     col1, col2 = st.columns(2)
 
     with col1:
-
-        st.metric("BMI", "22.4")
-
-        st.metric("Health Score", "92%")
+        st.markdown(theme.vital_card("⚖️", "BMI", "22.4", "Normal range", "steady"), unsafe_allow_html=True)
+        st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+        st.markdown(theme.vital_card("📈", "Health Score", "92%", "+3% vs last week", "steady"), unsafe_allow_html=True)
 
     with col2:
-
         medicines = list_medications()
 
-        st.subheader("💊 Current Medications")
+        st.markdown(theme.section_eyebrow("💊", "CURRENT MEDICATIONS"), unsafe_allow_html=True)
 
         if medicines:
-
-            st.table(medicines)
-
+            rows = "".join(theme.timeline_item(t, name, "steady") for name, t in medicines)
+            st.markdown(theme.card_open() + rows + theme.card_close(), unsafe_allow_html=True)
         else:
-
             st.info("No medications available.")
 
-    st.markdown("---")
-
-    st.subheader("🤖 AI Generated Health Tips")
+    st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
+    st.markdown(theme.section_eyebrow("🤖", "AI GENERATED HEALTH TIPS"), unsafe_allow_html=True)
 
     if st.button("Generate Today's Tips"):
 
         try:
+            placeholder = st.empty()
+            placeholder.markdown(theme.thinking_pulse("Preparing today's tips"), unsafe_allow_html=True)
 
             tips = ask_health_question(f"""
 
@@ -532,23 +590,24 @@ Do not repeat tips.
 
 """)
 
-            st.success("Today's Personalized Tips")
+            placeholder.empty()
+            st.markdown(theme.chat_bubble("assistant", tips), unsafe_allow_html=True)
 
-            st.write(tips)
-
-        except:
+        except Exception:
 
             st.error("Unable to generate today's health tips.")
 
-    st.markdown("---")
-
-    st.subheader("📊 Overall Health Status")
+    st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
+    st.markdown(theme.section_eyebrow("📊", "OVERALL HEALTH STATUS"), unsafe_allow_html=True)
 
     progress = 92
 
     st.progress(progress)
 
-    st.success(f"Overall Health Score : {progress}%")
+    st.markdown(
+        f'<div class="vital-sub" style="margin-top:-6px;">Overall health score: {progress}%</div>',
+        unsafe_allow_html=True
+    )
 
 
 
@@ -556,7 +615,12 @@ Do not repeat tips.
 
 elif menu == "🎯 Health Goals":
 
-    st.header("🎯 Health Goal Tracker")
+    st.markdown(theme.section_eyebrow("🎯", "GOALS"), unsafe_allow_html=True)
+    st.markdown(
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:1.3rem;'
+        'font-weight:600;margin-bottom:14px;">Health Goal Tracker</div>',
+        unsafe_allow_html=True
+    )
 
     goal = st.selectbox(
 
@@ -606,13 +670,20 @@ elif menu == "🎯 Health Goals":
 
     progress = min(progress,100)
 
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
     st.progress(progress)
+    st.markdown(
+        f'<div class="vital-sub" style="margin-top:-6px;">Goal progress: {progress}%</div>',
+        unsafe_allow_html=True
+    )
 
-    st.write(f"Goal Progress : {progress}%")
+    st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
     if st.button("Generate Goal Plan"):
 
         try:
+            placeholder = st.empty()
+            placeholder.markdown(theme.thinking_pulse("Building your goal plan"), unsafe_allow_html=True)
 
             plan = ask_health_question(f"""
 
@@ -638,18 +709,23 @@ Motivation
 
 """)
 
-            st.success("Personal Goal Plan")
+            placeholder.empty()
+            st.markdown(theme.section_eyebrow("📋", "PERSONAL GOAL PLAN"), unsafe_allow_html=True)
+            st.markdown(theme.chat_bubble("assistant", plan), unsafe_allow_html=True)
 
-            st.write(plan)
-
-        except:
+        except Exception:
 
             st.error("Unable to generate plan.")
 # ---------------- INDIAN HEALTHCARE ---------------- #
 
 elif menu == "🇮🇳 Indian Healthcare":
 
-    st.header("🇮🇳 Indian Healthcare Services")
+    st.markdown(theme.section_eyebrow("🇮🇳", "INDIAN HEALTHCARE"), unsafe_allow_html=True)
+    st.markdown(
+        '<div style="font-family:\'Space Grotesk\',sans-serif;font-size:1.3rem;'
+        'font-weight:600;margin-bottom:14px;">Indian Healthcare Services</div>',
+        unsafe_allow_html=True
+    )
 
     tab1, tab2, tab3, tab4 = st.tabs(
         [
@@ -706,9 +782,10 @@ elif menu == "🇮🇳 Indian Healthcare":
 
         if st.button("Generate Diet Plan"):
 
-            with st.spinner("Preparing your personalized diet..."):
+            placeholder = st.empty()
+            placeholder.markdown(theme.thinking_pulse("Preparing your personalized diet"), unsafe_allow_html=True)
 
-                response = ask_health_question(f"""
+            response = ask_health_question(f"""
 
 Create a personalized Indian diet plan.
 
@@ -742,9 +819,8 @@ Daily Calories
 
 """)
 
-                st.success("Your Personalized Diet Plan")
-
-                st.write(response)
+            placeholder.empty()
+            st.markdown(theme.chat_bubble("assistant", response), unsafe_allow_html=True)
 
     # ---------------- AYURVEDIC ---------------- #
 
@@ -758,9 +834,10 @@ Daily Calories
 
         if st.button("Get Ayurvedic Advice"):
 
-            with st.spinner("Generating Ayurvedic suggestions..."):
+            placeholder = st.empty()
+            placeholder.markdown(theme.thinking_pulse("Generating Ayurvedic suggestions"), unsafe_allow_html=True)
 
-                answer = ask_health_question(f"""
+            answer = ask_health_question(f"""
 
 Provide Ayurvedic suggestions.
 
@@ -782,135 +859,138 @@ When to Consult a Doctor
 
 """)
 
-                st.success("Ayurvedic Guidance")
+            placeholder.empty()
+            st.markdown(theme.chat_bubble("assistant", answer), unsafe_allow_html=True)
 
-                st.write(answer)
+    # ---------------- DOCTOR FINDER ---------------- #
 
- # ---------------- DOCTOR FINDER ---------------- #
+    with tab3:
 
+        st.subheader("🩺 Find Doctors Near You")
 
-    st.subheader("🩺 Find Doctors Near You")
+        city = st.selectbox(
+            "Select City",
+            [
+                "Hyderabad",
+                "Delhi",
+                "Bangalore",
+                "Mumbai",
+                "Chennai"
+            ]
+        )
 
-    city = st.selectbox(
-        "Select City",
-        [
-            "Hyderabad",
-            "Delhi",
-            "Bangalore",
-            "Mumbai",
-            "Chennai"
+        speciality = st.selectbox(
+            "Select Specialization",
+            [
+                "General Physician",
+                "Cardiologist",
+                "Dermatologist",
+                "Orthopedic",
+                "Pediatrician",
+                "Neurologist"
+            ]
+        )
+
+        doctors = [
+
+            {
+                "city":"Hyderabad",
+                "speciality":"Cardiologist",
+                "name":"Dr. Ramesh Reddy",
+                "hospital":"Apollo Hospitals",
+                "experience":"15 Years",
+                "rating":"⭐ 4.8",
+                "phone":"+91-9876543210"
+            },
+
+            {
+                "city":"Hyderabad",
+                "speciality":"General Physician",
+                "name":"Dr. Priya Sharma",
+                "hospital":"Yashoda Hospitals",
+                "experience":"10 Years",
+                "rating":"⭐ 4.7",
+                "phone":"+91-9123456789"
+            },
+
+            {
+                "city":"Delhi",
+                "speciality":"Dermatologist",
+                "name":"Dr. Amit Singh",
+                "hospital":"Fortis Hospital",
+                "experience":"12 Years",
+                "rating":"⭐ 4.9",
+                "phone":"+91-9988776655"
+            },
+
+            {
+                "city":"Bangalore",
+                "speciality":"Orthopedic",
+                "name":"Dr. Rahul Kumar",
+                "hospital":"Manipal Hospital",
+                "experience":"14 Years",
+                "rating":"⭐ 4.8",
+                "phone":"+91-9345678912"
+            },
+
+            {
+                "city":"Mumbai",
+                "speciality":"Neurologist",
+                "name":"Dr. Neha Mehta",
+                "hospital":"Kokilaben Hospital",
+                "experience":"18 Years",
+                "rating":"⭐ 4.9",
+                "phone":"+91-9870012345"
+            },
+
+            {
+                "city":"Chennai",
+                "speciality":"Pediatrician",
+                "name":"Dr. Lakshmi Iyer",
+                "hospital":"Apollo Chennai",
+                "experience":"11 Years",
+                "rating":"⭐ 4.8",
+                "phone":"+91-9444455555"
+            }
+
         ]
-    )
 
-    speciality = st.selectbox(
-        "Select Specialization",
-        [
-            "General Physician",
-            "Cardiologist",
-            "Dermatologist",
-            "Orthopedic",
-            "Pediatrician",
-            "Neurologist"
-        ]
-    )
+        if st.button("🔍 Search Doctors"):
 
-    doctors = [
+            found = False
 
-        {
-            "city":"Hyderabad",
-            "speciality":"Cardiologist",
-            "name":"Dr. Ramesh Reddy",
-            "hospital":"Apollo Hospitals",
-            "experience":"15 Years",
-            "rating":"⭐ 4.8",
-            "phone":"+91-9876543210"
-        },
+            for doctor in doctors:
 
-        {
-            "city":"Hyderabad",
-            "speciality":"General Physician",
-            "name":"Dr. Priya Sharma",
-            "hospital":"Yashoda Hospitals",
-            "experience":"10 Years",
-            "rating":"⭐ 4.7",
-            "phone":"+91-9123456789"
-        },
+                if doctor["city"] == city and doctor["speciality"] == speciality:
 
-        {
-            "city":"Delhi",
-            "speciality":"Dermatologist",
-            "name":"Dr. Amit Singh",
-            "hospital":"Fortis Hospital",
-            "experience":"12 Years",
-            "rating":"⭐ 4.9",
-            "phone":"+91-9988776655"
-        },
+                    found = True
 
-        {
-            "city":"Bangalore",
-            "speciality":"Orthopedic",
-            "name":"Dr. Rahul Kumar",
-            "hospital":"Manipal Hospital",
-            "experience":"14 Years",
-            "rating":"⭐ 4.8",
-            "phone":"+91-9345678912"
-        },
+                    with st.container():
 
-        {
-            "city":"Mumbai",
-            "speciality":"Neurologist",
-            "name":"Dr. Neha Mehta",
-            "hospital":"Kokilaben Hospital",
-            "experience":"18 Years",
-            "rating":"⭐ 4.9",
-            "phone":"+91-9870012345"
-        },
+                        st.markdown(theme.card_open(), unsafe_allow_html=True)
 
-        {
-            "city":"Chennai",
-            "speciality":"Pediatrician",
-            "name":"Dr. Lakshmi Iyer",
-            "hospital":"Apollo Chennai",
-            "experience":"11 Years",
-            "rating":"⭐ 4.8",
-            "phone":"+91-9444455555"
-        }
+                        st.subheader(f"👨‍⚕️ {doctor['name']}")
 
-    ]
+                        col1,col2 = st.columns(2)
 
-    if st.button("🔍 Search Doctors"):
+                        with col1:
 
-        found = False
+                            st.write("🏥 Hospital:",doctor["hospital"])
+                            st.write("🩺 Specialization:",doctor["speciality"])
+                            st.write("⭐ Rating:",doctor["rating"])
 
-        for doctor in doctors:
+                        with col2:
 
-            if doctor["city"] == city and doctor["speciality"] == speciality:
+                            st.write("📅 Experience:",doctor["experience"])
+                            st.write("📞 Contact:",doctor["phone"])
+                            st.success("Available for Appointment")
 
-                found = True
+                        st.markdown(theme.card_close(), unsafe_allow_html=True)
 
-                with st.container():
+            if not found:
 
-                    st.markdown("---")
+                st.error("No doctors found.")
 
-                    st.subheader(f"👨‍⚕️ {doctor['name']}")
-
-                    col1,col2 = st.columns(2)
-
-                    with col1:
-
-                        st.write("🏥 Hospital:",doctor["hospital"])
-                        st.write("🩺 Specialization:",doctor["speciality"])
-                        st.write("⭐ Rating:",doctor["rating"])
-
-                    with col2:
-
-                        st.write("📅 Experience:",doctor["experience"])
-                        st.write("📞 Contact:",doctor["phone"])
-                        st.success("Available for Appointment")
-
-        if not found:
-
-            st.error("No doctors found.")
     # ---------------- INSURANCE ---------------- #
 
     with tab4:
@@ -951,9 +1031,10 @@ When to Consult a Doctor
 
         if st.button("Suggest Insurance"):
 
-            with st.spinner("Finding suitable insurance..."):
+            placeholder = st.empty()
+            placeholder.markdown(theme.thinking_pulse("Finding suitable insurance"), unsafe_allow_html=True)
 
-                advice = ask_health_question(f"""
+            advice = ask_health_question(f"""
 
 Suggest a health insurance plan.
 
@@ -981,6 +1062,5 @@ Precautions
 
 """)
 
-                st.success("Insurance Recommendation")
-
-                st.write(advice)
+            placeholder.empty()
+            st.markdown(theme.chat_bubble("assistant", advice), unsafe_allow_html=True)
