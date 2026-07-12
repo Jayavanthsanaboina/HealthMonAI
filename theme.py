@@ -247,6 +247,15 @@ hr {{
     border-radius: 12px;
     padding: 14px 16px;
     height: 100%;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    cursor: default;
+}}
+
+.vital-card:hover {{
+    transform: translateY(-4px);
+    background: var(--bg-panel-2);
+    border-color: var(--mint);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35), 0 0 18px rgba(110,231,176,0.18);
 }}
 
 .vital-icon {{
